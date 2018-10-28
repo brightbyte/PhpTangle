@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file is part of PhpTangle.
+ *
+ * @license LGPL 2+
+ * @author Daniel Kinzler
+ */
 
 namespace Wikimedia\PhpTangle\CLI;
 
@@ -7,12 +13,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use Wikimedia\PhpTangle\Analysis\UsageExtractor;
 
 /**
- * This file is part of PhpTangle.
- *
- * @license LGPL 2+
- * @author Daniel Kinzler
+ * CLI command for analyzing files.
  */
 class AnalyzeCommand extends Command {
 
@@ -34,8 +38,20 @@ class AnalyzeCommand extends Command {
 		$finder = new Finder();
 		$finder->files()->name( '*.php' )->in( $dir )->sortByName();
 
+		$extractor = new UsageExtractor();
+
 		foreach ( $finder as $file ) {
-			$output->writeln( $file->getRelativePathname() );
+			$fname = $file->getRelativePathname();
+
+			$usages  = $extractor->extractFromFile( $file->getPathname() );
+
+			$this->printUsages( $fname, $usages, $output );
+		}
+	}
+
+	private function printUsages( string $fname, array $usages, OutputInterface $output ) {
+		foreach ( $usages as $usage ) {
+			$output->writeln( "$fname -> $usage" );
 		}
 	}
 
