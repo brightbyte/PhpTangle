@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+/**
+ * PhpTangle analyzes circular dependencies in PHP source code.
+ *
+ * @author    Daniel Kinzler <dkinzler@wikimedia.org>
+ * @copyright 2018 Wikimedia Foundation
+ * @license   LGPL2+
+ */
+
+if (is_file(__DIR__.'/../autoload.php') === true) {
+    include_once __DIR__.'/../autoload.php';
+} else {
+    include_once 'PHP/CodeSniffer/autoload.php';
+}
+
+$runner   = new PhpTangle\Application();
+$exitCode = $runner->runPHPCS();
+exit($exitCode);
