@@ -8,12 +8,15 @@
  * @license   LGPL2+
  */
 
-if (is_file(__DIR__.'/../autoload.php') === true) {
-    include_once __DIR__.'/../autoload.php';
+$autoloadPath = __DIR__.'/../vendor/autoload.php';
+
+if ( is_file( $autoloadPath ) === true ) {
+    require_once( $autoloadPath );
 } else {
-    include_once 'PHP/CodeSniffer/autoload.php';
+    echo( "Cannot find autoload information, please run composer install.\n" );
+    exit( 11 );
 }
 
-$runner   = new PhpTangle\Application();
-$exitCode = $runner->runPHPCS();
-exit($exitCode);
+$app = new \Wikimedia\PhpTangle\CLI\PhpTangle();
+$exitCode = $app->run();
+exit( $exitCode );
