@@ -43,9 +43,9 @@ class AnalyzeCommand extends Command {
 		foreach ( $finder as $file ) {
 			$fname = $file->getRelativePathname();
 
-			$usages  = $extractor->extractFromFile( $file->getPathname() );
+			$resource = $extractor->extractFromFile( $file->getPathname() );
 
-			$this->printUsages( $fname, $usages, $output );
+			$this->printUsages( $fname, $resource->getUsages(), $output );
 		}
 	}
 

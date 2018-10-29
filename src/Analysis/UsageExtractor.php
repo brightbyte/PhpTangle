@@ -8,34 +8,33 @@
 
 namespace Wikimedia\PhpTangle\Analysis;
 
-use PHP_Token_BACKTICK;
 use PHP_Token_COMMENT;
 use PHP_Token_SEMICOLON;
 use PHP_Token_Stream;
-use PHP_Token_STRING;
 use PHP_Token_USE;
 use PHP_Token_WHITESPACE;
+use Wikimedia\PhpTangle\Model\Resource;
 
 /**
- * Extracts usage information from PHP files.
+ * Extracts usages information from PHP files.
  */
 class UsageExtractor {
 
 	/**
 	 * @param string $file The PHP file to extract usages from
 	 *
-	 * @return string[] usages
+	 * @return Resource
 	 */
-	public function extractFromFile( $file ) {
+	public function extractFromFile( $file ): Resource {
 		return $this->extractFromStream( new PHP_Token_Stream( $file ) );
 	}
 
 	/**
 	 * @param PHP_Token_Stream $stream A token stream to extract usages from
 	 *
-	 * @return string[] usages
+	 * @return Resource
 	 */
-	public function extractFromStream( PHP_Token_Stream $stream ) {
+	public function extractFromStream( PHP_Token_Stream $stream ): Resource {
 		$state = '';
 		$usages = [];
 		$current = '';
@@ -64,7 +63,8 @@ class UsageExtractor {
 			$state = $type;
 		}
 
-		return $usages;
+		$resource = new Resource( '???', '???', $usages );
+		return $resource;
 	}
 
 }
