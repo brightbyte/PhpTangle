@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Wikimedia\PhpTangle\Analysis\UsageExtractor;
+use Wikimedia\PhpTangle\Model\Resource;
 
 /**
  * CLI command for analyzing files.
@@ -38,20 +39,20 @@ class AnalyzeCommand extends Command {
 		$finder = new Finder();
 		$finder->files()->name( '*.php' )->in( $dir )->sortByName();
 
-		$extractor = new UsageExtractor();
-
 		foreach ( $finder as $file ) {
-			$fname = $file->getRelativePathname();
+            $extractor = UsageExtractor::newFromFileName( $file->getPathname() );
+			$resource = $extractor->extract();
 
-			$resource = $extractor->extractFromFile( $file->getPathname() );
-
-			$this->printUsages( $fname, $resource->getUsages(), $output );
+			$this->printResource( $resource, $output );
 		}
 	}
 
-	private function printUsages( string $fname, array $usages, OutputInterface $output ) {
+	private function printResource( Resource $resource, OutputInterface $output ) {
+	    $usages = $resource->getUsages();
+	    $name = $resource->getType() . ' ' . $resource->getName();
+
 		foreach ( $usages as $usage ) {
-			$output->writeln( "$fname -> $usage" );
+			$output->writeln( "$name -> $usage" );
 		}
 	}
 

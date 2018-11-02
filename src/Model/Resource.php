@@ -13,8 +13,12 @@ namespace Wikimedia\PhpTangle\Model;
  * A Resource represents a node in the usages graph, along with its outgoing edges.
  */
 class Resource {
+    const FILE_RESOURCE = 'file';
+    const CLASS_RESOURCE = 'class';
+    const INTERFACE_RESOURCE = 'interface';
+    const TRAIT_RESOURCE = 'trait';
 
-	/** @var string */
+    /** @var string */
 	private $type;
 
 	/** @var string */
