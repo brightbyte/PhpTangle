@@ -58,6 +58,13 @@ class Resource {
 	}
 
 	/**
+	 * @param Reference[] $usages
+	 */
+	public function addUsages( array $usages ) {
+		$this->usages = array_merge( $this->usages, $usages );
+	}
+
+	/**
 	 * @return string
 	 */
 	public function __toString() {

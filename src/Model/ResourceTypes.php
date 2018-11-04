@@ -12,6 +12,7 @@ namespace Wikimedia\PhpTangle\Model;
  * Resource type constants
  */
 class ResourceTypes {
+	const NAMESPACE_RESOURCE = 'namespace';
 	const FILE_RESOURCE = 'file';
 	const TYPE_RESOURCE = 'type';
 	const BUILT_IN_TYPE_RESOURCE = 'built-in-type';

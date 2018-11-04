@@ -77,6 +77,7 @@ class UsageExtractor {
 
 			switch ( $type ) {
 				case PHP_Token_USE::class:
+					// TODO: trim leading backslash!
 					$target = $this->readTo( PHP_Token_SEMICOLON::class );
 					$usages[] = new Reference( Reference::DECLARED_VISIBILITY,
 						Reference::USE_MODE,

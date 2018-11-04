@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use Wikimedia\PhpTangle\Analysis\NamespaceAggregator;
 use Wikimedia\PhpTangle\Analysis\UsageExtractor;
 use Wikimedia\PhpTangle\Model\Resource;
 
@@ -39,11 +40,18 @@ class AnalyzeCommand extends Command {
 		$finder = new Finder();
 		$finder->files()->name( '*.php' )->in( $dir )->sortByName();
 
+		$namespaceAggregator = new NamespaceAggregator();
+
 		foreach ( $finder as $file ) {
 			$extractor = UsageExtractor::newFromFileName( $file->getPathname() );
 			$resource = $extractor->extract();
 
+			$namespaceAggregator->addResource( $resource );
 			$this->printResource( $resource, $output );
+		}
+
+		foreach ( $namespaceAggregator->getNamespaces() as $namespace ) {
+			$this->printResource( $namespace, $output );
 		}
 	}
 
