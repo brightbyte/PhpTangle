@@ -9,16 +9,12 @@
 namespace Wikimedia\PhpTangle\Model;
 
 /**
- * Represents a resource that may be used, and may use other resources.
+ * Value object representing a resource that may be used, and may use other resources.
  * A Resource represents a node in the usages graph, along with its outgoing edges.
  */
 class Resource {
-    const FILE_RESOURCE = 'file';
-    const CLASS_RESOURCE = 'class';
-    const INTERFACE_RESOURCE = 'interface';
-    const TRAIT_RESOURCE = 'trait';
 
-    /** @var string */
+	/** @var string */
 	private $type;
 
 	/** @var string */
@@ -30,9 +26,9 @@ class Resource {
 	/**
 	 * Resource constructor.
 	 *
-	 * @param string $type
+	 * @param string $type The type of the resource, using a ResourceType constant.
 	 * @param string $name
-	 * @param string[] $usages
+	 * @param Reference[] $usages
 	 */
 	public function __construct( string $type, string $name, array $usages ) {
 		$this->type = $type;
@@ -55,10 +51,17 @@ class Resource {
 	}
 
 	/**
-	 * @return string[]
+	 * @return Reference[]
 	 */
 	public function getUsages(): array {
 		return $this->usages;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->getType() . ' ' . $this->getName();
 	}
 
 }

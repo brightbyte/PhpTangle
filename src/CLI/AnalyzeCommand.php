@@ -40,7 +40,7 @@ class AnalyzeCommand extends Command {
 		$finder->files()->name( '*.php' )->in( $dir )->sortByName();
 
 		foreach ( $finder as $file ) {
-            $extractor = UsageExtractor::newFromFileName( $file->getPathname() );
+			$extractor = UsageExtractor::newFromFileName( $file->getPathname() );
 			$resource = $extractor->extract();
 
 			$this->printResource( $resource, $output );
@@ -48,11 +48,11 @@ class AnalyzeCommand extends Command {
 	}
 
 	private function printResource( Resource $resource, OutputInterface $output ) {
-	    $usages = $resource->getUsages();
-	    $name = $resource->getType() . ' ' . $resource->getName();
+		$usages = $resource->getUsages();
 
+		$output->writeln( "$resource:" );
 		foreach ( $usages as $usage ) {
-			$output->writeln( "$name -> $usage" );
+			$output->writeln( "\t$usage" );
 		}
 	}
 
